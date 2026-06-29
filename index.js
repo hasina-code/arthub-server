@@ -1025,28 +1025,28 @@ async function run() {
       });
 
 
-    // app.get(
-    //   "/admin/artworks",
-    //   verifyToken,
-    //   adminVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const artworks =
-    //         await artworksCollection
-    //           .find()
-    //           .sort({ createdAt: -1 })
-    //           .toArray();
+    app.get(
+      "/admin/artworks",
+      verifyToken,
+      adminVerify,
+      async (req, res) => {
+        try {
+          const artworks =
+            await artworksCollection
+              .find()
+              .sort({ createdAt: -1 })
+              .toArray();
 
-    //       res.send(artworks);
-    //     } catch (error) {
-    //       console.log(error);
+          res.send(artworks);
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         message: "Failed to fetch artworks",
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            message: "Failed to fetch artworks",
+          });
+        }
+      }
+    );
 
     // app.delete(
     //   "/admin/artworks/:id",
