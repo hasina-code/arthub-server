@@ -662,29 +662,29 @@ async function run() {
     });
 
 
-    // app.get(
-    //   "/purchase-history/:email",verifyToken,
-    //   async (req, res) => {
-    //     try {
-    //       const email = req.params.email;
+    app.get(
+      "/purchase-history/:email",verifyToken,
+      async (req, res) => {
+        try {
+          const email = req.params.email;
 
-    //       console.log("Requested Email:", email);
+          console.log("Requested Email:", email);
 
-    //       const purchases =
-    //         await transactionsCollection
-    //           .find({
-    //             buyerEmail: email,
-    //           })
-    //           .toArray();
+          const purchases =
+            await transactionsCollection
+              .find({
+                buyerEmail: email,
+              })
+              .toArray();
 
-    //       console.log("Purchases:", purchases);
+          console.log("Purchases:", purchases);
 
-    //       res.send(purchases);
-    //     } catch (error) {
-    //       res.status(500).send(error);
-    //     }
-    //   }
-    // );
+          res.send(purchases);
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      }
+    );
 
 
     // app.get(
