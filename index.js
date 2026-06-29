@@ -441,7 +441,8 @@ async function run() {
     );
 
 
-    // // DELETE COMMENT
+     // DELETE COMMENT
+
     app.delete(
       "/comments/:id",
       verifyToken,
@@ -478,110 +479,110 @@ async function run() {
       }
     );
 
-    // app.post("/create-checkout-session",verifyToken,async (req, res) => {
-    //   try {
-    //     const { artworkId, buyerEmail } = req.body;
+    app.post("/create-checkout-session",verifyToken,async (req, res) => {
+      try {
+        const { artworkId, buyerEmail } = req.body;
 
-    //     if (!artworkId || !buyerEmail) {
-    //       return res.status(400).send({
-    //         message: "Artwork ID and buyer email are required",
-    //       });
-    //     }
+        if (!artworkId || !buyerEmail) {
+          return res.status(400).send({
+            message: "Artwork ID and buyer email are required",
+          });
+        }
 
-    //     const artwork = await artworksCollection.findOne({
-    //       _id: new ObjectId(artworkId),
-    //     });
+        const artwork = await artworksCollection.findOne({
+          _id: new ObjectId(artworkId),
+        });
 
-    //     if (!artwork) {
-    //       return res.status(404).send({
-    //         message: "Artwork not found",
-    //       });
-    //     }
+        if (!artwork) {
+          return res.status(404).send({
+            message: "Artwork not found",
+          });
+        }
 
-    //     // Prevent buying sold artwork
-    //     if (artwork.status === "sold") {
-    //       return res.status(400).send({
-    //         message: "Artwork already sold",
-    //       });
-    //     }
-
-
-    //     const user = await userCollection.findOne({
-    //       email: buyerEmail,
-    //     });
-
-    //     if (!user) {
-    //       return res.status(404).send({
-    //         message: "User not found",
-    //       });
-    //     }
+        // Prevent buying sold artwork
+        if (artwork.status === "sold") {
+          return res.status(400).send({
+            message: "Artwork already sold",
+          });
+        }
 
 
-    //     const totalPurchases =
-    //       await transactionsCollection.countDocuments({
-    //         buyerEmail,
-    //       });
+        const user = await userCollection.findOne({
+          email: buyerEmail,
+        });
 
-    //     const tier =
-    //       user.subscriptionTier || "free";
+        if (!user) {
+          return res.status(404).send({
+            message: "User not found",
+          });
+        }
 
-    //     // Free plan limit
-    //     if (tier === "free" && totalPurchases >= 3) {
-    //       return res.status(403).send({
-    //         message:
-    //           "Free users can purchase maximum 3 artworks",
-    //       });
-    //     }
 
-    //     // Pro plan limit
-    //     if (tier === "pro" && totalPurchases >= 9) {
-    //       return res.status(403).send({
-    //         message:
-    //           "Pro users can purchase maximum 9 artworks",
-    //       });
-    //     }
-    //     // Premium = unlimited
-    //     const session =
-    //       await stripe.checkout.sessions.create({
-    //         payment_method_types: ["card"],
+        const totalPurchases =
+          await transactionsCollection.countDocuments({
+            buyerEmail,
+          });
 
-    //         mode: "payment",
+        const tier =
+          user.subscriptionTier || "free";
 
-    //         customer_email: buyerEmail,
+        // Free plan limit
+        if (tier === "free" && totalPurchases >= 3) {
+          return res.status(403).send({
+            message:
+              "Free users can purchase maximum 3 artworks",
+          });
+        }
 
-    //         line_items: [
-    //           {
-    //             price_data: {
-    //               currency: "usd",
+        // Pro plan limit
+        if (tier === "pro" && totalPurchases >= 9) {
+          return res.status(403).send({
+            message:
+              "Pro users can purchase maximum 9 artworks",
+          });
+        }
+        // Premium = unlimited
+        const session =
+          await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
 
-    //               product_data: {
-    //                 name: artwork.title,
-    //                 images: [artwork.image],
-    //               },
+            mode: "payment",
 
-    //               unit_amount: artwork.price * 100,
-    //             },
+            customer_email: buyerEmail,
 
-    //             quantity: 1,
-    //           },
-    //         ],
+            line_items: [
+              {
+                price_data: {
+                  currency: "usd",
 
-    //         success_url: `${process.env.CLIENT_URL}/payment-success?artworkId=${artworkId}&buyer=${buyerEmail}&session_id={CHECKOUT_SESSION_ID}`,
+                  product_data: {
+                    name: artwork.title,
+                    images: [artwork.image],
+                  },
 
-    //         cancel_url: `${process.env.CLIENT_URL}/artworks/${artworkId}`,
-    //       });
+                  unit_amount: artwork.price * 100,
+                },
 
-    //     res.send({
-    //       url: session.url,
-    //     });
-    //   } catch (error) {
-    //     console.log("Checkout Error:", error);
+                quantity: 1,
+              },
+            ],
 
-    //     res.status(500).send({
-    //       message: "Checkout session creation failed",
-    //     });
-    //   }
-    // });
+            success_url: `${process.env.CLIENT_URL}/payment-success?artworkId=${artworkId}&buyer=${buyerEmail}&session_id={CHECKOUT_SESSION_ID}`,
+
+            cancel_url: `${process.env.CLIENT_URL}/artworks/${artworkId}`,
+          });
+
+        res.send({
+          url: session.url,
+        });
+      } catch (error) {
+        console.log("Checkout Error:", error);
+
+        res.status(500).send({
+          message: "Checkout session creation failed",
+        });
+      }
+    });
 
     // app.post("/purchase-success",verifyToken,  async (req, res) => {
     //   try {
