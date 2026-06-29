@@ -36,6 +36,45 @@ const client = new MongoClient(uri, {
 });
 
 
+ // const JWKS = createRemoteJWKSet(
+    //   new URL(`${process.env.CLIENT_URL}/api/auth/jwks`),
+    // );
+
+    // const verifyToken = async (req, res, next) => {
+    //   const authHeader = req.headers.authorization;
+    //   console.log(authHeader)
+
+    //   if (!authHeader || !authHeader.startsWith("Bearer")) {
+    //     return res.status(401).json({ msg: "Unauthorized: No token provided" });
+    //   }
+
+    //   console.log("Auth Header:", authHeader);
+    //   // ["Bearer", "xjasasdhsagdydsav"]
+
+    //   const token = authHeader.split(" ")[1];
+
+    //   if (!token) {
+    //     return res.status(401).json({ msg: "Unauthorized" });
+    //   }
+
+    //   try {
+    //     const { payload } = await jwtVerify(token, JWKS);
+    //     req.user = payload;
+
+    //     next();
+    //   } catch (error) {
+    //     console.log(error);
+    //     return res.status(401).json({ msg: "Unauthorized" });
+    //   }
+    // };
+
+
+
+ 
+
+
+
+
 async function run() {
   try {
     await client.connect();
@@ -95,96 +134,45 @@ async function run() {
       }
     };
 
-    const artistVerify = async (req, res, next) => {
-      try {
-        if (req.user.role !== "artist") {
-          return res.status(403).json({
-            message: "Forbidden: Artist role required",
-          });
-        }
-
-        next();
-      } catch (error) {
-        console.log("Artist Verify Error:", error);
-
-        res.status(500).json({
-          message: error.message,
-        });
-      }
-    };
-
-    const adminVerify = async (req, res, next) => {
-      console.log("Current User:", req.user);
-      try {
-        if (req.user.role !== "admin") {
-          return res.status(403).json({
-            message: "Forbidden: admin role required",
-          });
-        }
-
-        next();
-      } catch (error) {
-        console.log("Admin Verify Error:", error);
-
-        res.status(500).json({
-          message: error.message,
-        });
-      }
-    };
-
-
-    // const JWKS = createRemoteJWKSet(
-    //   new URL(`${process.env.CLIENT_URL}/api/auth/jwks`),
-    // );
-
-    // const verifyToken = async (req, res, next) => {
-    //   const authHeader = req.headers.authorization;
-    //   console.log(authHeader)
-
-    //   if (!authHeader || !authHeader.startsWith("Bearer")) {
-    //     return res.status(401).json({ msg: "Unauthorized: No token provided" });
-    //   }
-
-    //   console.log("Auth Header:", authHeader);
-    //   // ["Bearer", "xjasasdhsagdydsav"]
-
-    //   const token = authHeader.split(" ")[1];
-
-    //   if (!token) {
-    //     return res.status(401).json({ msg: "Unauthorized" });
-    //   }
-
+    // const artistVerify = async (req, res, next) => {
     //   try {
-    //     const { payload } = await jwtVerify(token, JWKS);
-    //     req.user = payload;
+    //     if (req.user.role !== "artist") {
+    //       return res.status(403).json({
+    //         message: "Forbidden: Artist role required",
+    //       });
+    //     }
 
     //     next();
     //   } catch (error) {
-    //     console.log(error);
-    //     return res.status(401).json({ msg: "Unauthorized" });
+    //     console.log("Artist Verify Error:", error);
+
+    //     res.status(500).json({
+    //       message: error.message,
+    //     });
     //   }
     // };
 
-    // const artistVerify = async (req, res, next) => {
-    //   const user = req.user;
-
-    //  if (user.role !== "artist") {
-    //     return res.status(403).json({ msg: "Forbidden: Artist role required" });
-    //   }
-    //   next();
-    // };
-
-
-    // async function run() {
+    // const adminVerify = async (req, res, next) => {
+    //   console.log("Current User:", req.user);
     //   try {
-    //     await client.connect();
+    //     if (req.user.role !== "admin") {
+    //       return res.status(403).json({
+    //         message: "Forbidden: admin role required",
+    //       });
+    //     }
 
-    // const db = client.db("ArtHub");
-    // const sessionCollection = db.collection("session");
+    //     next();
+    //   } catch (error) {
+    //     console.log("Admin Verify Error:", error);
 
-    // const subscriptionsCollection = db.collection("subscriptions");
-    // const userCollection = db.collection("user")
-    // const artworksCollection = db.collection("artworks");
+    //     res.status(500).json({
+    //       message: error.message,
+    //     });
+    //   }
+    // };
+
+
+   
 
 
     // app.get("/api/artworks", async (req, res) => {
@@ -829,40 +817,40 @@ async function run() {
       }
     );
 
-    // app.get(
-    //   "/artist/artworks/:email",
-    //   verifyToken,
-    //   artistVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const email = req.params.email;
+    app.get(
+      "/artist/artworks/:email",
+      verifyToken,
+      artistVerify,
+      async (req, res) => {
+        try {
+          const email = req.params.email;
 
-    //       if (email !== req.user.email) {
-    //         return res.status(403).send({
-    //           message: "Forbidden Access",
-    //         });
-    //       }
+          if (email !== req.user.email) {
+            return res.status(403).send({
+              message: "Forbidden Access",
+            });
+          }
 
-    //       const result =
-    //         await artworksCollection
-    //           .find({
-    //             artistEmail: email,
-    //           })
-    //           .sort({
-    //             createdAt: -1,
-    //           })
-    //           .toArray();
+          const result =
+            await artworksCollection
+              .find({
+                artistEmail: email,
+              })
+              .sort({
+                createdAt: -1,
+              })
+              .toArray();
 
-    //       res.send(result);
-    //     } catch (error) {
-    //       console.log(error);
+          res.send(result);
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         message: "Failed to fetch artworks",
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            message: "Failed to fetch artworks",
+          });
+        }
+      }
+    );
 
     // app.get("/artist/sales/:email",
     //   verifyToken,
