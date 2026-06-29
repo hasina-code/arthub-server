@@ -113,24 +113,24 @@ async function run() {
       }
     };
 
-    // const adminVerify = async (req, res, next) => {
-    //   console.log("Current User:", req.user);
-    //   try {
-    //     if (req.user.role !== "admin") {
-    //       return res.status(403).json({
-    //         message: "Forbidden: admin role required",
-    //       });
-    //     }
+    const adminVerify = async (req, res, next) => {
+      console.log("Current User:", req.user);
+      try {
+        if (req.user.role !== "admin") {
+          return res.status(403).json({
+            message: "Forbidden: admin role required",
+          });
+        }
 
-    //     next();
-    //   } catch (error) {
-    //     console.log("Admin Verify Error:", error);
+        next();
+      } catch (error) {
+        console.log("Admin Verify Error:", error);
 
-    //     res.status(500).json({
-    //       message: error.message,
-    //     });
-    //   }
-    // };
+        res.status(500).json({
+          message: error.message,
+        });
+      }
+    };
 
 
     // const JWKS = createRemoteJWKSet(
@@ -222,24 +222,24 @@ async function run() {
 
 
     //PUBLIC ROUTES 
-    // app.get("/artworks/featured", async (req, res) => {
-    //   try {
-    //     // Latest 6 artworks
-    //     const artworks = await artworksCollection
-    //       .find({})
-    //       .sort({ createdAt: -1 })
-    //       .limit(6)
-    //       .toArray();
+    app.get("/artworks/featured", async (req, res) => {
+      try {
+        // Latest 6 artworks
+        const artworks = await artworksCollection
+          .find({})
+          .sort({ createdAt: -1 })
+          .limit(6)
+          .toArray();
 
-    //     res.send(artworks);
-    //   } catch (error) {
-    //     console.log(error);
+        res.send(artworks);
+      } catch (error) {
+        console.log(error);
 
-    //     res.status(500).send({
-    //       message: "Failed to fetch featured artworks",
-    //     });
-    //   }
-    // });
+        res.status(500).send({
+          message: "Failed to fetch featured artworks",
+        });
+      }
+    });
 
     // app.get("/artworks", async (req, res) => {
     //   try {
@@ -345,9 +345,9 @@ async function run() {
     // });
 
 
-    // //BUYER ROUTES 
+    //BUYER ROUTES 
 
-    // //ADD COMMENT
+    //ADD COMMENT
 
     // app.post(
     //   "/artworks/:id/comments",
@@ -990,7 +990,8 @@ async function run() {
     // );
 
 
-    // //  ADMIN ROUTES 
+                           //  ADMIN ROUTES 
+
 
     // app.get("/users", verifyToken,
     //   adminVerify, async (req, res) => {
