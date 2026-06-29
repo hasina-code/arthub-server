@@ -282,23 +282,23 @@ async function run() {
     });
 
 
-    // app.get("/artworks/:id", async (req, res) => {
-    //   try {
-    //     const artwork = await artworksCollection.findOne({
-    //       _id: new ObjectId(req.params.id),
-    //     });
+    app.get("/artworks/:id", async (req, res) => {
+      try {
+        const artwork = await artworksCollection.findOne({
+          _id: new ObjectId(req.params.id),
+        });
 
-    //     if (!artwork) {
-    //       return res.status(404).send({
-    //         message: "Artwork not found",
-    //       });
-    //     }
+        if (!artwork) {
+          return res.status(404).send({
+            message: "Artwork not found",
+          });
+        }
 
-    //     res.send(artwork);
-    //   } catch (error) {
-    //     res.status(500).send(error);
-    //   }
-    // });
+        res.send(artwork);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    });
 
     // app.get("/artworks/:id/comments", async (req, res) => {
     //   try {
