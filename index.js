@@ -687,30 +687,30 @@ async function run() {
     );
 
 
-    // app.get(
-    //   "/check-purchase/:artworkId/:email", verifyToken,
-    //   async (req, res) => {
-    //     try {
-    //       const { artworkId, email } = req.params;
+    app.get(
+      "/check-purchase/:artworkId/:email", verifyToken,
+      async (req, res) => {
+        try {
+          const { artworkId, email } = req.params;
 
-    //       const purchase =
-    //         await transactionsCollection.findOne({
-    //           artworkId,
-    //           buyerEmail: email,
-    //         });
+          const purchase =
+            await transactionsCollection.findOne({
+              artworkId,
+              buyerEmail: email,
+            });
 
-    //       res.send({
-    //         purchased: !!purchase,
-    //       });
-    //     } catch (error) {
-    //       console.log(error);
+          res.send({
+            purchased: !!purchase,
+          });
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         message: "Failed to check purchase",
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            message: "Failed to check purchase",
+          });
+        }
+      }
+    );
 
     app.post("/subscription", verifyToken, async (req, res) => {
       try {
