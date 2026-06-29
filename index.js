@@ -134,23 +134,23 @@ async function run() {
       }
     };
 
-    // const artistVerify = async (req, res, next) => {
-    //   try {
-    //     if (req.user.role !== "artist") {
-    //       return res.status(403).json({
-    //         message: "Forbidden: Artist role required",
-    //       });
-    //     }
+    const artistVerify = async (req, res, next) => {
+      try {
+        if (req.user.role !== "artist") {
+          return res.status(403).json({
+            message: "Forbidden: Artist role required",
+          });
+        }
 
-    //     next();
-    //   } catch (error) {
-    //     console.log("Artist Verify Error:", error);
+        next();
+      } catch (error) {
+        console.log("Artist Verify Error:", error);
 
-    //     res.status(500).json({
-    //       message: error.message,
-    //     });
-    //   }
-    // };
+        res.status(500).json({
+          message: error.message,
+        });
+      }
+    };
 
     // const adminVerify = async (req, res, next) => {
     //   console.log("Current User:", req.user);
