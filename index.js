@@ -1048,31 +1048,31 @@ async function run() {
       }
     );
 
-    // app.delete(
-    //   "/admin/artworks/:id",
-    //   verifyToken,
-    //   adminVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const id = req.params.id;
+    app.delete(
+      "/admin/artworks/:id",
+      verifyToken,
+      adminVerify,
+      async (req, res) => {
+        try {
+          const id = req.params.id;
 
-    //       await artworksCollection.deleteOne({
-    //         _id: new ObjectId(id),
-    //       });
+          await artworksCollection.deleteOne({
+            _id: new ObjectId(id),
+          });
 
-    //       res.send({
-    //         success: true,
-    //         message: "Artwork deleted successfully",
-    //       });
-    //     } catch (error) {
-    //       console.log(error);
+          res.send({
+            success: true,
+            message: "Artwork deleted successfully",
+          });
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         message: "Delete failed",
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            message: "Delete failed",
+          });
+        }
+      }
+    );
 
 
 
