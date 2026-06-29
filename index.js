@@ -852,29 +852,29 @@ async function run() {
       }
     );
 
-    // app.get("/artist/sales/:email",
-    //   verifyToken,
-    //   artistVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const email = req.params.email;
+    app.get("/artist/sales/:email",
+      verifyToken,
+      artistVerify,
+      async (req, res) => {
+        try {
+          const email = req.params.email;
 
-    //       const sales = await transactionsCollection
-    //         .find({
-    //           artistEmail: email,
-    //           type: "purchase",
-    //         })
-    //         .sort({ purchaseDate: -1 })
-    //         .toArray();
+          const sales = await transactionsCollection
+            .find({
+              artistEmail: email,
+              type: "purchase",
+            })
+            .sort({ purchaseDate: -1 })
+            .toArray();
 
-    //       res.send(sales);
-    //     } catch (error) {
-    //       console.log(error);
-    //       res.status(500).send({
-    //         message: "Failed to get sales",
-    //       });
-    //     }
-    //   });
+          res.send(sales);
+        } catch (error) {
+          console.log(error);
+          res.status(500).send({
+            message: "Failed to get sales",
+          });
+        }
+      });
 
 
     // app.patch(
