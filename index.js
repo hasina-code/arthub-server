@@ -1122,24 +1122,24 @@ async function run() {
 
     // // All Transactions
 
-    // app.get(
-    //   "/admin/transactions",
-    //   verifyToken,
-    //   adminVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const result =
-    //         await transactionsCollection
-    //           .find()
-    //           .sort({ purchaseDate: -1 })
-    //           .toArray();
+    app.get(
+      "/admin/transactions",
+      verifyToken,
+      adminVerify,
+      async (req, res) => {
+        try {
+          const result =
+            await transactionsCollection
+              .find()
+              .sort({ purchaseDate: -1 })
+              .toArray();
 
-    //       res.send(result);
-    //     } catch (error) {
-    //       res.status(500).send(error);
-    //     }
-    //   }
-    // );
+          res.send(result);
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      }
+    );
 
     // // Chart Data
 
