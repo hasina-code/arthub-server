@@ -320,29 +320,29 @@ async function run() {
       }
     });
 
-    // app.get("/users/:email", async (req, res) => {
-    //   try {
-    //     const email = req.params.email;
+    app.get("/users/:email", async (req, res) => {
+      try {
+        const email = req.params.email;
 
-    //     const user = await userCollection.findOne({
-    //       email,
-    //     });
+        const user = await userCollection.findOne({
+          email,
+        });
 
-    //     if (!user) {
-    //       return res.status(404).send({
-    //         message: "User not found",
-    //       });
-    //     }
+        if (!user) {
+          return res.status(404).send({
+            message: "User not found",
+          });
+        }
 
-    //     res.send(user);
-    //   } catch (error) {
-    //     console.log(error);
+        res.send(user);
+      } catch (error) {
+        console.log(error);
 
-    //     res.status(500).send({
-    //       message: "Failed to fetch user",
-    //     });
-    //   }
-    // });
+        res.status(500).send({
+          message: "Failed to fetch user",
+        });
+      }
+    });
 
 
     //BUYER ROUTES 
