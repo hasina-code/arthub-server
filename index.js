@@ -241,45 +241,45 @@ async function run() {
       }
     });
 
-    // app.get("/artworks", async (req, res) => {
-    //   try {
-    //     const search = req.query.search || "";
-    //     const category = req.query.category || "";
-    //     const sort = req.query.sort || "newest";
+    app.get("/artworks", async (req, res) => {
+      try {
+        const search = req.query.search || "";
+        const category = req.query.category || "";
+        const sort = req.query.sort || "newest";
 
-    //     let query = {};
+        let query = {};
 
-    //     if (search) {
-    //       query.title = {
-    //         $regex: search,
-    //         $options: "i",
-    //       };
-    //     }
+        if (search) {
+          query.title = {
+            $regex: search,
+            $options: "i",
+          };
+        }
 
-    //     if (category) {
-    //       query.category = category;
-    //     }
+        if (category) {
+          query.category = category;
+        }
 
-    //     let sortOption = { createdAt: -1 };
+        let sortOption = { createdAt: -1 };
 
-    //     if (sort === "low") {
-    //       sortOption = { price: 1 };
-    //     }
+        if (sort === "low") {
+          sortOption = { price: 1 };
+        }
 
-    //     if (sort === "high") {
-    //       sortOption = { price: -1 };
-    //     }
+        if (sort === "high") {
+          sortOption = { price: -1 };
+        }
 
-    //     const result = await artworksCollection
-    //       .find(query)
-    //       .sort(sortOption)
-    //       .toArray();
+        const result = await artworksCollection
+          .find(query)
+          .sort(sortOption)
+          .toArray();
 
-    //     res.send(result);
-    //   } catch (error) {
-    //     res.status(500).send(error);
-    //   }
-    // });
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    });
 
 
     // app.get("/artworks/:id", async (req, res) => {
