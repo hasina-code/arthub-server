@@ -983,24 +983,24 @@ async function run() {
                            //  ADMIN ROUTES 
 
 
-    // app.get("/users", verifyToken,
-    //   adminVerify, async (req, res) => {
-    //     try {
-    //       const users = await userCollection
-    //         .find({})
-    //         .sort({ _id: -1 })
-    //         .toArray();
+    app.get("/users", verifyToken,
+      adminVerify, async (req, res) => {
+        try {
+          const users = await userCollection
+            .find({})
+            .sort({ _id: -1 })
+            .toArray();
 
-    //       res.send(users);
-    //     } catch (error) {
-    //       console.log(error);
+          res.send(users);
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         success: false,
-    //         message: "Failed to fetch users",
-    //       });
-    //     }
-    //   });
+          res.status(500).send({
+            success: false,
+            message: "Failed to fetch users",
+          });
+        }
+      });
 
 
 
