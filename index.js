@@ -22,7 +22,10 @@ const PORT = process.env.PORT || 5000;
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.CLIENT_URL],
+    origin: [
+  process.env.CLIENT_URL,
+  "http://localhost:3000",
+],
   }),
 );
 app.use(express.json());
@@ -71,13 +74,9 @@ const client = new MongoClient(uri, {
 
 
  
-
-
-
-
 async function run() {
   try {
-    await client.connect();
+  //  await client.connect();
     const db = client.db("ArtHub");
 
 
@@ -687,7 +686,7 @@ async function run() {
       }
     );
 
-    app.post("/subscription", verifyToken, async (req, res) => {
+    app.post("/subscription",  async (req, res) => {
       try {
         const { sessionId, userId, priceId, userEmail } = req.body;
 
@@ -967,7 +966,7 @@ async function run() {
     );
 
 
-                           //  ADMIN ROUTES 
+           //  ADMIN ROUTES 
 
 
     app.get("/users", verifyToken,
@@ -1192,7 +1191,7 @@ async function run() {
 
 
 
-    await client.db("admin").command({ ping: 1 });
+  //  await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!",
     );
