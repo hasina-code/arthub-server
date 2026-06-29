@@ -759,41 +759,41 @@ async function run() {
       }
     });
 
-    // app.patch(
-    //   "/users/profile",
-    //   verifyToken,
-    //   async (req, res) => {
-    //     try {
-    //       const { name, image } = req.body;
+    app.patch(
+      "/users/profile",
+      verifyToken,
+      async (req, res) => {
+        try {
+          const { name, image } = req.body;
 
-    //       const email = req.user.email;
+          const email = req.user.email;
 
-    //       const result =
-    //         await userCollection.updateOne(
-    //           { email },
-    //           {
-    //             $set: {
-    //               name,
-    //               image,
-    //             },
-    //           }
-    //         );
+          const result =
+            await userCollection.updateOne(
+              { email },
+              {
+                $set: {
+                  name,
+                  image,
+                },
+              }
+            );
 
-    //       res.send({
-    //         success: true,
-    //         message: "Profile updated successfully",
-    //       });
+          res.send({
+            success: true,
+            message: "Profile updated successfully",
+          });
 
-    //     } catch (error) {
-    //       console.log("PROFILE UPDATE ERROR:", error);
+        } catch (error) {
+          console.log("PROFILE UPDATE ERROR:", error);
 
-    //       res.status(500).send({
-    //         success: false,
-    //         message: error.message,
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            success: false,
+            message: error.message,
+          });
+        }
+      }
+    );
 
 
 
