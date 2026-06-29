@@ -152,24 +152,24 @@ async function run() {
       }
     };
 
-    // const adminVerify = async (req, res, next) => {
-    //   console.log("Current User:", req.user);
-    //   try {
-    //     if (req.user.role !== "admin") {
-    //       return res.status(403).json({
-    //         message: "Forbidden: admin role required",
-    //       });
-    //     }
+    const adminVerify = async (req, res, next) => {
+      console.log("Current User:", req.user);
+      try {
+        if (req.user.role !== "admin") {
+          return res.status(403).json({
+            message: "Forbidden: admin role required",
+          });
+        }
 
-    //     next();
-    //   } catch (error) {
-    //     console.log("Admin Verify Error:", error);
+        next();
+      } catch (error) {
+        console.log("Admin Verify Error:", error);
 
-    //     res.status(500).json({
-    //       message: error.message,
-    //     });
-    //   }
-    // };
+        res.status(500).json({
+          message: error.message,
+        });
+      }
+    };
 
 
    
