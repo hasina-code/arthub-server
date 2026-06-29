@@ -1076,46 +1076,47 @@ async function run() {
 
 
 
-    // // Total analytics
-    // app.get(
-    //   "/admin/analytics",
-    //   verifyToken,
-    //   adminVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const totalUsers =
-    //         await userCollection.countDocuments();
+  // Total analytics
+  
+    app.get(
+      "/admin/analytics",
+      verifyToken,
+      adminVerify,
+      async (req, res) => {
+        try {
+          const totalUsers =
+            await userCollection.countDocuments();
 
-    //       const totalArtists =
-    //         await userCollection.countDocuments({
-    //           role: "artist",
-    //         });
+          const totalArtists =
+            await userCollection.countDocuments({
+              role: "artist",
+            });
 
-    //       const soldArtworks =
-    //         await transactionsCollection.countDocuments({
-    //           type: "purchase",
-    //         });
+          const soldArtworks =
+            await transactionsCollection.countDocuments({
+              type: "purchase",
+            });
 
-    //       const transactions =
-    //         await transactionsCollection.find().toArray();
+          const transactions =
+            await transactionsCollection.find().toArray();
 
-    //       const totalRevenue =
-    //         transactions.reduce(
-    //           (sum, item) => sum + (item.amount || 0),
-    //           0
-    //         );
+          const totalRevenue =
+            transactions.reduce(
+              (sum, item) => sum + (item.amount || 0),
+              0
+            );
 
-    //       res.send({
-    //         totalUsers,
-    //         totalArtists,
-    //         soldArtworks,
-    //         totalRevenue,
-    //       });
-    //     } catch (error) {
-    //       res.status(500).send(error);
-    //     }
-    //   }
-    // );
+          res.send({
+            totalUsers,
+            totalArtists,
+            soldArtworks,
+            totalRevenue,
+          });
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      }
+    );
 
 
 
