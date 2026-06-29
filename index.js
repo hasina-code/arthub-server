@@ -935,49 +935,49 @@ async function run() {
       }
     );
 
-    // app.delete(
-    //   "/artworks/:id",
-    //   verifyToken,
-    //   artistVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const id = req.params.id;
+    app.delete(
+      "/artworks/:id",
+      verifyToken,
+      artistVerify,
+      async (req, res) => {
+        try {
+          const id = req.params.id;
 
-    //       const artwork =
-    //         await artworksCollection.findOne({
-    //           _id: new ObjectId(id),
-    //         });
+          const artwork =
+            await artworksCollection.findOne({
+              _id: new ObjectId(id),
+            });
 
-    //       if (!artwork) {
-    //         return res.status(404).send({
-    //           message: "Artwork not found",
-    //         });
-    //       }
+          if (!artwork) {
+            return res.status(404).send({
+              message: "Artwork not found",
+            });
+          }
 
-    //       if (
-    //         artwork.artistEmail !==
-    //         req.user.email
-    //       ) {
-    //         return res.status(403).send({
-    //           message: "Forbidden Access",
-    //         });
-    //       }
+          if (
+            artwork.artistEmail !==
+            req.user.email
+          ) {
+            return res.status(403).send({
+              message: "Forbidden Access",
+            });
+          }
 
-    //       const result =
-    //         await artworksCollection.deleteOne({
-    //           _id: new ObjectId(id),
-    //         });
+          const result =
+            await artworksCollection.deleteOne({
+              _id: new ObjectId(id),
+            });
 
-    //       res.send(result);
-    //     } catch (error) {
-    //       console.log(error);
+          res.send(result);
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         message: "Delete failed",
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            message: "Delete failed",
+          });
+        }
+      }
+    );
 
 
                            //  ADMIN ROUTES 
