@@ -196,19 +196,6 @@ async function run() {
     //   }
     // });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //PUBLIC ROUTES 
     app.get("/artworks/featured", async (req, res) => {
       try {
@@ -1005,37 +992,37 @@ async function run() {
 
 
 
-    // app.patch("/users/role/:id", verifyToken,
-    //   adminVerify, async (req, res) => {
-    //     try {
-    //       const id = req.params.id;
-    //       const { role } = req.body;
+    app.patch("/users/role/:id", verifyToken,
+      adminVerify, async (req, res) => {
+        try {
+          const id = req.params.id;
+          const { role } = req.body;
 
-    //       const result = await userCollection.updateOne(
-    //         {
-    //           _id: new ObjectId(id),
-    //         },
-    //         {
-    //           $set: {
-    //             role,
-    //           },
-    //         }
-    //       );
+          const result = await userCollection.updateOne(
+            {
+              _id: new ObjectId(id),
+            },
+            {
+              $set: {
+                role,
+              },
+            }
+          );
 
-    //       res.send({
-    //         success: true,
-    //         message: `Role updated to ${role}`,
-    //         result,
-    //       });
-    //     } catch (error) {
-    //       console.log(error);
+          res.send({
+            success: true,
+            message: `Role updated to ${role}`,
+            result,
+          });
+        } catch (error) {
+          console.log(error);
 
-    //       res.status(500).send({
-    //         success: false,
-    //         message: "Failed to update role",
-    //       });
-    //     }
-    //   });
+          res.status(500).send({
+            success: false,
+            message: "Failed to update role",
+          });
+        }
+      });
 
 
     // app.get(
