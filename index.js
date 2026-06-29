@@ -10,9 +10,9 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 dotenv.config();
 
-// const stripe = require("stripe")(
-//   process.env.STRIPE_SECRET_KEY
-// );
+const stripe = require("stripe")(
+  process.env.STRIPE_SECRET_KEY
+);
 
 const uri = process.env.MONGODB_URI;
 
@@ -42,175 +42,171 @@ async function run() {
     const db = client.db("ArtHub");
 
 
-    // // const sessionCollection = db.collection("session");
-    // // const subscriptionsCollection = db.collection("subscriptions");
-    // // const userCollection = db.collection("user");
-    // // const artworksCollection = db.collection("artworks");
-    // // const transactionsCollection = db.collection("transactions");
-    // // const commentsCollection = db.collection("comments");
+    const sessionCollection = db.collection("session");
+     const subscriptionsCollection = db.collection("subscriptions");
+    const userCollection = db.collection("user");
+    const artworksCollection = db.collection("artworks");
+    const transactionsCollection = db.collection("transactions");
+    const commentsCollection = db.collection("comments");
 
 
 
-    // // const verifyToken = async (req, res, next) => {
-    // //   try {
-    // //     const authHeader = req.headers.authorization;
+    const verifyToken = async (req, res, next) => {
+      try {
+        const authHeader = req.headers.authorization;
 
-    // //     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    // //       return res.status(401).send({
-    // //         message: "Unauthorized",
-    // //       }); J
-    // //     }
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+          return res.status(401).send({
+            message: "Unauthorized",
+          }); J
+        }
 
-    // //     const token = authHeader.split(" ")[1];
+        const token = authHeader.split(" ")[1];
 
-    // //     const session = await sessionCollection.findOne({
-    // //       token: token,
-    // //     });
+        const session = await sessionCollection.findOne({
+          token: token,
+        });
 
-    // //     if (!session) {
-    // //       return res.status(401).send({
-    // //         message: "Invalid Session",
-    // //       });
-    // //     }
-
-
-    // //     const user = await userCollection.findOne({
-    // //       _id: new ObjectId(session.userId),
-    // //     });
-
-    // //     if (!user) {
-    // //       return res.status(404).send({
-    // //         message: "User not found",
-    // //       });
-    // //     }
-
-    // //     req.user = user;
-
-    // //     next();
-    // //   } catch (error) {
-    // //     console.log(error);
-    // //     res.status(500).send({
-    // //       message: "Internal Server Error",
-    // //     });
-    // //   }
-    // // };
-
-    // // const artistVerify = async (req, res, next) => {
-    // //   try {
-    // //     if (req.user.role !== "artist") {
-    // //       return res.status(403).json({
-    // //         message: "Forbidden: Artist role required",
-    // //       });
-    // //     }
-
-    // //     next();
-    // //   } catch (error) {
-    // //     console.log("Artist Verify Error:", error);
-
-    // //     res.status(500).json({
-    // //       message: error.message,
-    // //     });
-    // //   }
-    // // };
-
-    // // const adminVerify = async (req, res, next) => {
-    // //   console.log("Current User:", req.user);
-    // //   try {
-    // //     if (req.user.role !== "admin") {
-    // //       return res.status(403).json({
-    // //         message: "Forbidden: admin role required",
-    // //       });
-    // //     }
-
-    // //     next();
-    // //   } catch (error) {
-    // //     console.log("Admin Verify Error:", error);
-
-    // //     res.status(500).json({
-    // //       message: error.message,
-    // //     });
-    // //   }
-    // // };
+        if (!session) {
+          return res.status(401).send({
+            message: "Invalid Session",
+          });
+        }
 
 
-    // // const JWKS = createRemoteJWKSet(
-    // //   new URL(`${process.env.CLIENT_URL}/api/auth/jwks`),
-    // // );
+        const user = await userCollection.findOne({
+          _id: new ObjectId(session.userId),
+        });
 
-    // // const verifyToken = async (req, res, next) => {
-    // //   const authHeader = req.headers.authorization;
-    // //   console.log(authHeader)
+        if (!user) {
+          return res.status(404).send({
+            message: "User not found",
+          });
+        }
 
-    // //   if (!authHeader || !authHeader.startsWith("Bearer")) {
-    // //     return res.status(401).json({ msg: "Unauthorized: No token provided" });
-    // //   }
+        req.user = user;
 
-    // //   console.log("Auth Header:", authHeader);
-    // //   // ["Bearer", "xjasasdhsagdydsav"]
+        next();
+      } catch (error) {
+        console.log(error);
+        res.status(500).send({
+          message: "Internal Server Error",
+        });
+      }
+    };
 
-    // //   const token = authHeader.split(" ")[1];
+    // const artistVerify = async (req, res, next) => {
+    //   try {
+    //     if (req.user.role !== "artist") {
+    //       return res.status(403).json({
+    //         message: "Forbidden: Artist role required",
+    //       });
+    //     }
 
-    // //   if (!token) {
-    // //     return res.status(401).json({ msg: "Unauthorized" });
-    // //   }
+    //     next();
+    //   } catch (error) {
+    //     console.log("Artist Verify Error:", error);
 
-    // //   try {
-    // //     const { payload } = await jwtVerify(token, JWKS);
-    // //     req.user = payload;
+    //     res.status(500).json({
+    //       message: error.message,
+    //     });
+    //   }
+    // };
 
-    // //     next();
-    // //   } catch (error) {
-    // //     console.log(error);
-    // //     return res.status(401).json({ msg: "Unauthorized" });
-    // //   }
-    // // };
+    // const adminVerify = async (req, res, next) => {
+    //   console.log("Current User:", req.user);
+    //   try {
+    //     if (req.user.role !== "admin") {
+    //       return res.status(403).json({
+    //         message: "Forbidden: admin role required",
+    //       });
+    //     }
 
-    // // const artistVerify = async (req, res, next) => {
-    // //   const user = req.user;
+    //     next();
+    //   } catch (error) {
+    //     console.log("Admin Verify Error:", error);
 
-    // //  if (user.role !== "artist") {
-    // //     return res.status(403).json({ msg: "Forbidden: Artist role required" });
-    // //   }
-    // //   next();
-    // // };
-
-
-    // // async function run() {
-    // //   try {
-    // //     await client.connect();
-
-    // // const db = client.db("ArtHub");
-    // // const sessionCollection = db.collection("session");
-
-    // // const subscriptionsCollection = db.collection("subscriptions");
-    // // const userCollection = db.collection("user")
-    // // const artworksCollection = db.collection("artworks");
-
-
-    // // app.get("/api/artworks", async (req, res) => {
-    // //   try {
-    // //     const featured = req.query.featured === "true";
-
-    // //     const query = featured ? { featured: true } : {};
-
-    // //     const artworks = await artworksCollection
-    // //       .find(query)
-    // //       .sort({ createdAt: -1 }) 
-    // //       .limit(6)               
-    // //       .toArray();
-
-    // //     res.send(artworks);
-    // //   } catch (error) {
-    // //     res.status(500).send({
-    // //       success: false,
-    // //       message: "Failed to fetch artworks",
-    // //     });
-    // //   }
-    // // });
+    //     res.status(500).json({
+    //       message: error.message,
+    //     });
+    //   }
+    // };
 
 
+    // const JWKS = createRemoteJWKSet(
+    //   new URL(`${process.env.CLIENT_URL}/api/auth/jwks`),
+    // );
+
+    // const verifyToken = async (req, res, next) => {
+    //   const authHeader = req.headers.authorization;
+    //   console.log(authHeader)
+
+    //   if (!authHeader || !authHeader.startsWith("Bearer")) {
+    //     return res.status(401).json({ msg: "Unauthorized: No token provided" });
+    //   }
+
+    //   console.log("Auth Header:", authHeader);
+    //   // ["Bearer", "xjasasdhsagdydsav"]
+
+    //   const token = authHeader.split(" ")[1];
+
+    //   if (!token) {
+    //     return res.status(401).json({ msg: "Unauthorized" });
+    //   }
+
+    //   try {
+    //     const { payload } = await jwtVerify(token, JWKS);
+    //     req.user = payload;
+
+    //     next();
+    //   } catch (error) {
+    //     console.log(error);
+    //     return res.status(401).json({ msg: "Unauthorized" });
+    //   }
+    // };
+
+    // const artistVerify = async (req, res, next) => {
+    //   const user = req.user;
+
+    //  if (user.role !== "artist") {
+    //     return res.status(403).json({ msg: "Forbidden: Artist role required" });
+    //   }
+    //   next();
+    // };
 
 
+    // async function run() {
+    //   try {
+    //     await client.connect();
+
+    // const db = client.db("ArtHub");
+    // const sessionCollection = db.collection("session");
+
+    // const subscriptionsCollection = db.collection("subscriptions");
+    // const userCollection = db.collection("user")
+    // const artworksCollection = db.collection("artworks");
+
+
+    // app.get("/api/artworks", async (req, res) => {
+    //   try {
+    //     const featured = req.query.featured === "true";
+
+    //     const query = featured ? { featured: true } : {};
+
+    //     const artworks = await artworksCollection
+    //       .find(query)
+    //       .sort({ createdAt: -1 }) 
+    //       .limit(6)               
+    //       .toArray();
+
+    //     res.send(artworks);
+    //   } catch (error) {
+    //     res.status(500).send({
+    //       success: false,
+    //       message: "Failed to fetch artworks",
+    //     });
+    //   }
+    // });
 
 
 
@@ -221,7 +217,11 @@ async function run() {
 
 
 
-    // //PUBLIC ROUTES 
+
+
+
+
+    //PUBLIC ROUTES 
     // app.get("/artworks/featured", async (req, res) => {
     //   try {
     //     // Latest 6 artworks
@@ -710,52 +710,52 @@ async function run() {
     //   }
     // );
 
-    // app.post("/subscription", verifyToken, async (req, res) => {
-    //   try {
-    //     const { sessionId, userId, priceId, userEmail } = req.body;
+    app.post("/subscription", verifyToken, async (req, res) => {
+      try {
+        const { sessionId, userId, priceId, userEmail } = req.body;
 
-    //     if (!sessionId || !userId || !priceId || !userEmail) {
-    //       return res.status(400).json({ error: "Missing required fields" });
-    //     }
+        if (!sessionId || !userId || !priceId || !userEmail) {
+          return res.status(400).json({ error: "Missing required fields" });
+        }
 
-    //     const existingSubscription = await subscriptionsCollection.findOne({ sessionId });
-    //     if (existingSubscription) {
-    //       return res.status(200).json({ message: "Subscription already processed" });
-    //     }
+        const existingSubscription = await subscriptionsCollection.findOne({ sessionId });
+        if (existingSubscription) {
+          return res.status(200).json({ message: "Subscription already processed" });
+        }
 
-    //     await subscriptionsCollection.insertOne({
-    //       sessionId,
-    //       userId,
-    //       userEmail,
-    //       priceId,
-    //       createdAt: new Date(),
-    //     });
-
-
-    //     const tier = priceId === "price_1TkgIb3fBkSUmSNE2BKueqkS" ? "premium" : "pro";
+        await subscriptionsCollection.insertOne({
+          sessionId,
+          userId,
+          userEmail,
+          priceId,
+          createdAt: new Date(),
+        });
 
 
-    //     const updateResult = await userCollection.updateOne(
-    //       { _id: new ObjectId(userId) },
-    //       {
-    //         $set: {
-    //           subscriptionTier: tier,
-    //           plan: tier
-    //         }
-    //       }
-    //     );
+        const tier = priceId === "price_1TkgIb3fBkSUmSNE2BKueqkS" ? "premium" : "pro";
 
-    //     if (updateResult.modifiedCount === 0) {
-    //       return res.status(404).json({ error: "User not found or no changes made" });
-    //     }
 
-    //     res.status(200).json({ message: "Subscription updated successfully" });
+        const updateResult = await userCollection.updateOne(
+          { _id: new ObjectId(userId) },
+          {
+            $set: {
+              subscriptionTier: tier,
+              plan: tier
+            }
+          }
+        );
 
-    //   } catch (err) {
-    //     console.error("Subscription Error:", err);
-    //     res.status(500).json({ error: "Internal Server Error" });
-    //   }
-    // });
+        if (updateResult.modifiedCount === 0) {
+          return res.status(404).json({ error: "User not found or no changes made" });
+        }
+
+        res.status(200).json({ message: "Subscription updated successfully" });
+
+      } catch (err) {
+        console.error("Subscription Error:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+    });
 
     // app.patch(
     //   "/users/profile",
