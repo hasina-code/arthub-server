@@ -397,47 +397,50 @@ async function run() {
       }
     );
 
-    // //UPDATE COMMENT
-    // app.patch(
-    //   "/comments/:id",
-    //   verifyToken,
-    //   async (req, res) => {
-    //     try {
-    //       const id = req.params.id;
+    //UPDATE COMMENT
+    
+    app.patch(
+      "/comments/:id",
+      verifyToken,
+      async (req, res) => {
+        try {
+          const id = req.params.id;
 
-    //       const existing =
-    //         await commentsCollection.findOne({
-    //           _id: new ObjectId(id),
-    //         });
+          const existing =
+            await commentsCollection.findOne({
+              _id: new ObjectId(id),
+            });
 
-    //       if (
-    //         existing.userEmail !== req.user.email
-    //       ) {
-    //         return res.status(403).send({
-    //           message: "Forbidden",
-    //         });
-    //       }
+          if (
+            existing.userEmail !== req.user.email
+          ) {
+            return res.status(403).send({
+              message: "Forbidden",
+            });
+          }
 
-    //       await commentsCollection.updateOne(
-    //         {
-    //           _id: new ObjectId(id),
-    //         },
-    //         {
-    //           $set: {
-    //             comment: req.body.comment,
-    //           },
-    //         }
-    //       );
+          await commentsCollection.updateOne(
+            {
+              _id: new ObjectId(id),
+            },
+            {
+              $set: {
+                comment: req.body.comment,
+              },
+            }
+          );
 
-    //       res.send({
-    //         message: "Comment updated",
-    //       });
-    //     } catch (error) {
-    //       res.status(500).send(error);
-    //     }
+          res.send({
+            message: "Comment updated",
+          });
+        } catch (error) {
+          res.status(500).send(error);
+        }
 
-    //   }
-    // );
+      }
+    );
+
+
     // // DELETE COMMENT
     // app.delete(
     //   "/comments/:id",
