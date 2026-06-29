@@ -345,59 +345,57 @@ async function run() {
     });
 
 
-    //BUYER ROUTES 
+                  //BUYER ROUTES 
 
-    //ADD COMMENT
+    
 
-    // app.post(
-    //   "/artworks/:id/comments",
-    //   verifyToken,
-    //   async (req, res) => {
-    //     try {
-    //       const artworkId = req.params.id;
-    //       const { comment } = req.body;
-
-
-    //       const purchased =
-    //         await transactionsCollection.findOne({
-    //           artworkId,
-    //           buyerEmail: req.user.email,
-    //         });
-
-    //       if (!purchased) {
-    //         return res.status(403).send({
-    //           message:
-    //             "Purchase artwork before commenting",
-    //         });
-    //       }
-
-    //       const commentData = {
-    //         artworkId,
-    //         userId: req.user._id.toString(),
-    //         userName: req.user.name,
-    //         userEmail: req.user.email,
-    //         userImage: req.user.image,
-    //         comment,
-    //         createdAt: new Date(),
-    //       };
-
-    //       const result =
-    //         await commentsCollection.insertOne(
-    //           commentData
-    //         );
-
-    //       res.send(result);
-    //     } catch (error) {
-    //       console.log(error);
-
-    //       res.status(500).send({
-    //         message: "Comment failed",
-    //       });
-    //     }
+    app.post(
+      "/artworks/:id/comments",
+      verifyToken,
+      async (req, res) => {
+        try {
+          const artworkId = req.params.id;
+          const { comment } = req.body;
 
 
-    //   }
-    // );
+          const purchased =
+            await transactionsCollection.findOne({
+              artworkId,
+              buyerEmail: req.user.email,
+            });
+
+          if (!purchased) {
+            return res.status(403).send({
+              message:
+                "Purchase artwork before commenting",
+            });
+          }
+
+          const commentData = {
+            artworkId,
+            userId: req.user._id.toString(),
+            userName: req.user.name,
+            userEmail: req.user.email,
+            userImage: req.user.image,
+            comment,
+            createdAt: new Date(),
+          };
+
+          const result =
+            await commentsCollection.insertOne(
+              commentData
+            );
+
+          res.send(result);
+        } catch (error) {
+          console.log(error);
+
+          res.status(500).send({
+            message: "Comment failed",
+          });
+        }
+      }
+    );
 
     // //UPDATE COMMENT
     // app.patch(
