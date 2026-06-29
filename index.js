@@ -1120,7 +1120,7 @@ async function run() {
 
 
 
-    // // All Transactions
+  // All Transactions
 
     app.get(
       "/admin/transactions",
@@ -1141,54 +1141,54 @@ async function run() {
       }
     );
 
-    // // Chart Data
+     // Chart Data
 
-    // app.get(
-    //   "/admin/chart-data",
-    //   verifyToken,
-    //   adminVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const artworks =
-    //         await artworksCollection.find().toArray();
+    app.get(
+      "/admin/chart-data",
+      verifyToken,
+      adminVerify,
+      async (req, res) => {
+        try {
+          const artworks =
+            await artworksCollection.find().toArray();
 
-    //       const transactions =
-    //         await transactionsCollection.find().toArray();
+          const transactions =
+            await transactionsCollection.find().toArray();
 
-    //       // category wise artworks
+          // category wise artworks
 
-    //       const categoryMap = {};
+          const categoryMap = {};
 
-    //       artworks.forEach((art) => {
-    //         categoryMap[art.category] =
-    //           (categoryMap[art.category] || 0) + 1;
-    //       });
+          artworks.forEach((art) => {
+            categoryMap[art.category] =
+              (categoryMap[art.category] || 0) + 1;
+          });
 
-    //       const categoryData =
-    //         Object.keys(categoryMap).map((key) => ({
-    //           name: key,
-    //           value: categoryMap[key],
-    //         }));
+          const categoryData =
+            Object.keys(categoryMap).map((key) => ({
+              name: key,
+              value: categoryMap[key],
+            }));
 
-    //       // sales chart
+          // sales chart
 
-    //       const salesData =
-    //         transactions.map((item) => ({
-    //           name: new Date(
-    //             item.purchaseDate
-    //           ).toLocaleDateString(),
-    //           amount: item.amount,
-    //         }));
+          const salesData =
+            transactions.map((item) => ({
+              name: new Date(
+                item.purchaseDate
+              ).toLocaleDateString(),
+              amount: item.amount,
+            }));
 
-    //       res.send({
-    //         categoryData,
-    //         salesData,
-    //       });
-    //     } catch (error) {
-    //       res.status(500).send(error);
-    //     }
-    //   }
-    // );
+          res.send({
+            categoryData,
+            salesData,
+          });
+        } catch (error) {
+          res.status(500).send(error);
+        }
+      }
+    );
 
 
 
