@@ -398,7 +398,7 @@ async function run() {
     );
 
     //UPDATE COMMENT
-    
+
     app.patch(
       "/comments/:id",
       verifyToken,
@@ -442,41 +442,41 @@ async function run() {
 
 
     // // DELETE COMMENT
-    // app.delete(
-    //   "/comments/:id",
-    //   verifyToken,
-    //   async (req, res) => {
-    //     try {
-    //       const id = req.params.id;
+    app.delete(
+      "/comments/:id",
+      verifyToken,
+      async (req, res) => {
+        try {
+          const id = req.params.id;
 
 
-    //       const existing =
-    //         await commentsCollection.findOne({
-    //           _id: new ObjectId(id),
-    //         });
+          const existing =
+            await commentsCollection.findOne({
+              _id: new ObjectId(id),
+            });
 
-    //       if (
-    //         existing.userEmail !== req.user.email
-    //       ) {
-    //         return res.status(403).send({
-    //           message: "Forbidden",
-    //         });
-    //       }
+          if (
+            existing.userEmail !== req.user.email
+          ) {
+            return res.status(403).send({
+              message: "Forbidden",
+            });
+          }
 
-    //       await commentsCollection.deleteOne({
-    //         _id: new ObjectId(id),
-    //       });
+          await commentsCollection.deleteOne({
+            _id: new ObjectId(id),
+          });
 
-    //       res.send({
-    //         message: "Comment deleted",
-    //       });
-    //     } catch (error) {
-    //       res.status(500).send(error);
-    //     }
+          res.send({
+            message: "Comment deleted",
+          });
+        } catch (error) {
+          res.status(500).send(error);
+        }
 
 
-    //   }
-    // );
+      }
+    );
 
     // app.post("/create-checkout-session",verifyToken,async (req, res) => {
     //   try {
