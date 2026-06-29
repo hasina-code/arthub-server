@@ -300,25 +300,25 @@ async function run() {
       }
     });
 
-    // app.get("/artworks/:id/comments", async (req, res) => {
-    //   try {
-    //     const artworkId = req.params.id;
+    app.get("/artworks/:id/comments", async (req, res) => {
+      try {
+        const artworkId = req.params.id;
 
 
-    //     const comments = await commentsCollection
-    //       .find({ artworkId })
-    //       .sort({ createdAt: -1 })
-    //       .toArray();
+        const comments = await commentsCollection
+          .find({ artworkId })
+          .sort({ createdAt: -1 })
+          .toArray();
 
-    //     res.send(comments);
+        res.send(comments);
 
 
-    //   } catch (error) {
-    //     res.status(500).send({
-    //       message: "Failed to fetch comments",
-    //     });
-    //   }
-    // });
+      } catch (error) {
+        res.status(500).send({
+          message: "Failed to fetch comments",
+        });
+      }
+    });
 
     // app.get("/users/:email", async (req, res) => {
     //   try {
