@@ -877,63 +877,63 @@ async function run() {
       });
 
 
-    // app.patch(
-    //   "/artworks/:id",
-    //   verifyToken,
-    //   artistVerify,
-    //   async (req, res) => {
-    //     try {
-    //       const id = req.params.id;
+    app.patch(
+      "/artworks/:id",
+      verifyToken,
+      artistVerify,
+      async (req, res) => {
+        try {
+          const id = req.params.id;
 
-    //       const artwork =
-    //         await artworksCollection.findOne({
-    //           _id: new ObjectId(id),
-    //         });
+          const artwork =
+            await artworksCollection.findOne({
+              _id: new ObjectId(id),
+            });
 
-    //       if (!artwork) {
-    //         return res.status(404).send({
-    //           message: "Artwork not found",
-    //         });
-    //       }
+          if (!artwork) {
+            return res.status(404).send({
+              message: "Artwork not found",
+            });
+          }
 
-    //       if (
-    //         artwork.artistEmail !== req.user.email
-    //       ) {
-    //         return res.status(403).send({
-    //           message: "Forbidden access",
-    //         });
-    //       }
+          if (
+            artwork.artistEmail !== req.user.email
+          ) {
+            return res.status(403).send({
+              message: "Forbidden access",
+            });
+          }
 
-    //       const result =
-    //         await artworksCollection.updateOne(
-    //           {
-    //             _id: new ObjectId(id),
-    //           },
-    //           {
-    //             $set: {
-    //               title: req.body.title,
-    //               description: req.body.description,
-    //               price: Number(req.body.price),
-    //               category: req.body.category,
-    //               image: req.body.image,
-    //             },
-    //           }
-    //         );
+          const result =
+            await artworksCollection.updateOne(
+              {
+                _id: new ObjectId(id),
+              },
+              {
+                $set: {
+                  title: req.body.title,
+                  description: req.body.description,
+                  price: Number(req.body.price),
+                  category: req.body.category,
+                  image: req.body.image,
+                },
+              }
+            );
 
-    //       res.send({
-    //         success: true,
-    //         message: "Artwork updated successfully",
-    //         result,
-    //       });
-    //     } catch (error) {
-    //       console.log("UPDATE ERROR:", error);
+          res.send({
+            success: true,
+            message: "Artwork updated successfully",
+            result,
+          });
+        } catch (error) {
+          console.log("UPDATE ERROR:", error);
 
-    //       res.status(500).send({
-    //         message: error.message,
-    //       });
-    //     }
-    //   }
-    // );
+          res.status(500).send({
+            message: error.message,
+          });
+        }
+      }
+    );
 
     // app.delete(
     //   "/artworks/:id",
